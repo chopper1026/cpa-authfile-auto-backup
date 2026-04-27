@@ -78,7 +78,7 @@ do_status() {
         if [ -f "$LOG_DIR/daemon.log" ]; then
             echo ""
             echo "最近日志:"
-            tail -5 "$LOG_DIR/daemon.log"
+            tail -20 "$LOG_DIR/daemon.log"
         fi
     else
         echo "CPA Backup 未在运行"
