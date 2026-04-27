@@ -18,6 +18,7 @@ import yaml
 
 SCRIPT_DIR = Path(__file__).parent.resolve()
 DEFAULT_CONFIG = SCRIPT_DIR / "config.yaml"
+_config_path = None
 
 logger = logging.getLogger("cpa-backup")
 
@@ -146,7 +147,11 @@ def backup_project(cfg: dict, project: dict, timestamp: datetime) -> bool:
 
 
 def run_backup(cfg: dict):
-    """执行一次全量备份"""
+    """执行一次全量备份（每次重新读取配置文件）"""
+    global _config_path
+    if _config_path:
+        cfg = load_config(_config_path)
+
     timestamp = datetime.now()
     logger.info(f"========== 开始备份任务 ({timestamp.strftime('%Y-%m-%d %H:%M:%S')}) ==========")
 
@@ -195,7 +200,10 @@ def main():
     cfg = load_config(args.config)
     setup_logging(cfg)
 
-    logger.info(f"配置已加载: {args.config}")
+    global _config_path
+    _config_path = args.config
+
+    logger.info(f"配置已加载: {args.config}（daemon 模式下每次备份前自动重新读取）")
     logger.info(f"备份项目数: {len(cfg.get('projects', []))}")
 
     for p in cfg.get("projects", []):
