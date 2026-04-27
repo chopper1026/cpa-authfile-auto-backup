@@ -12,9 +12,31 @@ CLIProxyAPI (CPA) 认证文件定时备份到阿里云 OSS。
 
 ## 安装
 
+### 1. 安装 Python 3.12
+
+Ubuntu/Debian（通过 Deadsnakes PPA）：
+
 ```bash
+sudo apt update
+sudo apt install software-properties-common -y
+sudo add-apt-repository ppa:deadsnakes/ppa -y
+sudo apt update
+sudo apt install python3.12 python3.12-venv -y
+```
+
+> Ubuntu 24.04+ 自带 Python 3.12，直接 `sudo apt install python3.12 python3.12-venv` 即可。
+
+### 2. 创建虚拟环境并安装依赖
+
+**不要**直接用系统 pip 安装（Ubuntu 的 Python 受 PEP 668 保护，会报 `externally-managed-environment` 错误）。
+
+```bash
+python3.12 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
+
+> 之后所有操作都要先 `source venv/bin/activate` 激活虚拟环境，或者直接用 `venv/bin/python` 来运行脚本。
 
 ## 配置
 
@@ -31,6 +53,9 @@ cp config.example.yaml config.yaml
 ## 使用
 
 ```bash
+# 激活虚拟环境
+source venv/bin/activate
+
 # 单次备份（适合 crontab 调用）
 python backup.py --once
 
@@ -47,8 +72,10 @@ python backup.py -c /path/to/config.yaml --once
 
 ```bash
 # 每天凌晨 3 点执行备份
-0 3 * * * cd /path/to/cpa-authfile-auto-backup && python backup.py --once >> /var/log/cpa-backup/cron.log 2>&1
+0 3 * * * cd /root/cpa-authfile-auto-backup && /root/cpa-authfile-auto-backup/venv/bin/python backup.py --once >> /var/log/cpa-backup/cron.log 2>&1
 ```
+
+> crontab 中用 venv 的完整 Python 路径，不需要激活虚拟环境。
 
 ## OSS 存储结构
 
