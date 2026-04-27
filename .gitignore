@@ -1,0 +1,19 @@
+# 配置文件（含 OSS 密钥，不可提交）
+config.yaml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# 日志
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
