@@ -10,6 +10,10 @@ venv/
 
 # 日志
 *.log
+logs/
+
+# 运行时
+cpa-backup.pid
 
 # IDE
 .vscode/

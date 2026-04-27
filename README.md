@@ -52,18 +52,17 @@ cp config.example.yaml config.yaml
 
 ## 使用
 
-项目提供了 `start.sh` 启动脚本，自动使用虚拟环境的 Python，无需手动激活：
+项目提供了 `start.sh` 管理脚本，自动使用虚拟环境的 Python，无需手动激活：
 
 ```bash
-# 单次备份
-./start.sh --once
-
-# daemon 模式（持续运行，按配置定时执行）
-./start.sh
-
-# 指定配置文件
-./start.sh -c /path/to/config.yaml --once
+./start.sh start      # 后台启动 daemon
+./start.sh stop       # 停止 daemon
+./start.sh restart    # 重启 daemon
+./start.sh status     # 查看运行状态和最近日志
+./start.sh --once     # 前台单次执行（适合 crontab）
 ```
+
+> daemon 模式下修改 `config.yaml` 后无需重启，下次备份时会自动重新读取配置。
 
 ## 使用 crontab 定时执行
 
