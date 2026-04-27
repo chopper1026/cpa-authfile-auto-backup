@@ -52,18 +52,17 @@ cp config.example.yaml config.yaml
 
 ## 使用
 
-```bash
-# 激活虚拟环境
-source venv/bin/activate
+项目提供了 `start.sh` 启动脚本，自动使用虚拟环境的 Python，无需手动激活：
 
-# 单次备份（适合 crontab 调用）
-python backup.py --once
+```bash
+# 单次备份
+./start.sh --once
 
 # daemon 模式（持续运行，按配置定时执行）
-python backup.py
+./start.sh
 
 # 指定配置文件
-python backup.py -c /path/to/config.yaml --once
+./start.sh -c /path/to/config.yaml --once
 ```
 
 ## 使用 crontab 定时执行
@@ -72,10 +71,8 @@ python backup.py -c /path/to/config.yaml --once
 
 ```bash
 # 每天凌晨 3 点执行备份
-0 3 * * * cd /root/cpa-authfile-auto-backup && /root/cpa-authfile-auto-backup/venv/bin/python backup.py --once >> /var/log/cpa-backup/cron.log 2>&1
+0 3 * * * /root/cpa-authfile-auto-backup/start.sh --once >> /var/log/cpa-backup/cron.log 2>&1
 ```
-
-> crontab 中用 venv 的完整 Python 路径，不需要激活虚拟环境。
 
 ## OSS 存储结构
 
